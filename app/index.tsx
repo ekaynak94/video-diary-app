@@ -1,12 +1,7 @@
 import React from "react";
-import {
-  SafeAreaView,
-  Image,
-  View,
-  Text,
-  FlatList,
-  Button,
-} from "react-native";
+import { Image, View, Text, FlatList } from "react-native";
+import { Link } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 const defaultThumbnail = require("@/assets/images/icon.png");
 
@@ -48,12 +43,12 @@ const projectsList = [
 export default function HomeScreen() {
   const renderItem = ({ item }) => {
     return (
-      <View className="flex-1 m-2 items-center p-2 rounded-md ">
+      <View className="flex-1 m-2 gap-1">
         <Image
           source={item.thumbnail ? { uri: item.thumbnail } : defaultThumbnail}
-          className="w-24 h-24 bg-gray-300"
+          className="w-full h-48"
         />
-        <Text className="mt-2 text-lg font-bold">{item.title}</Text>
+        <Text className="text-lg font-bold">{item.title}</Text>
         <Text className="text-sm text-gray-600">
           {new Date(item.createdAt).toLocaleDateString()}
         </Text>
@@ -61,22 +56,25 @@ export default function HomeScreen() {
     );
   };
 
+  const renderHeader = () => (
+    <Text className="text-2xl font-bold mx-2 mb-4">My projects</Text>
+  );
+
   return (
-    <SafeAreaView className="flex-1 p-4">
-      <Text className="text-2xl font-bold mb-4">My projects</Text>
+    <View className="flex-1 py-safe p-2">
       <FlatList
         data={projectsList}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         numColumns={2}
-        contentContainerStyle={{ flexGrow: 1 }}
+        ListHeaderComponent={renderHeader}
       />
-      <Button
-        title="Create Project"
-        onPress={() => {
-          /* Handle create project */
-        }}
-      />
-    </SafeAreaView>
+      <Link
+        href="/modal"
+        className="bg-purple rounded-lg m-2 p-4 text-center text-white text-lg"
+      >
+        + Create Project
+      </Link>
+    </View>
   );
 }
