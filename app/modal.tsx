@@ -1,5 +1,5 @@
 import { View } from "react-native";
 
-export default function NotFoundScreen() {
+export default function Modal() {
   return <View></View>;
 }
