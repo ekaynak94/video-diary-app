@@ -1,7 +1,8 @@
 import React from "react";
-import { Image, View, TouchableOpacity, Text, FlatList } from "react-native";
+import { Image, TouchableOpacity, View, Text, FlatList } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import { Link, useRouter } from "expo-router";
+import CustomButton from "../components/CustomButton";
 
 const defaultThumbnail = require("@/assets/images/icon.png");
 
@@ -112,12 +113,12 @@ export default function HomeScreen() {
         ListHeaderComponentClassName={projectsList.length > 0 ? "" : "hidden"}
         ListEmptyComponent={renderEmptyComponent}
       />
-      <TouchableOpacity
+      <CustomButton
+        className="m-2"
         onPress={selectVideo}
-        className="bg-purple rounded-lg m-2 p-4 text-center text-white text-lg"
-      >
-        <Text className="text-white">+ Create Project</Text>
-      </TouchableOpacity>
+        iconName="add"
+        title="Create Project"
+      />
     </View>
   );
 }
