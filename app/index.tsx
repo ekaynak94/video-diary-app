@@ -5,30 +5,30 @@ import { Link } from "expo-router";
 const defaultThumbnail = require("@/assets/images/icon.png");
 
 const projectsList = [
-  // {
-  //   id: "myVideo 1",
-  //   title: "My Video 1",
-  //   description: "This is a video.",
-  //   createdAt: "2021-01-01T00:00:00Z",
-  //   uri: "",
-  //   thumbnail: "",
-  // },
-  // {
-  //   id: "myVideo 2",
-  //   title: "My Video 2",
-  //   description: "This is a video.",
-  //   createdAt: "2021-01-01T00:00:00Z",
-  //   uri: "",
-  //   thumbnail: "",
-  // },
-  // {
-  //   id: "myVideo 3",
-  //   title: "My Video 3",
-  //   description: "This is a video.",
-  //   createdAt: "2021-01-01T00:00:00Z",
-  //   uri: "",
-  //   thumbnail: "",
-  // },
+  {
+    id: "myVideo 1",
+    title: "My Video 1",
+    description: "This is a video.",
+    createdAt: "2021-01-01T00:00:00Z",
+    uri: "",
+    thumbnail: "",
+  },
+  {
+    id: "myVideo 2",
+    title: "My Video 2",
+    description: "This is a video.",
+    createdAt: "2021-01-01T00:00:00Z",
+    uri: "",
+    thumbnail: "",
+  },
+  {
+    id: "myVideo 3",
+    title: "My Video 3",
+    description: "This is a video.",
+    createdAt: "2021-01-01T00:00:00Z",
+    uri: "",
+    thumbnail: "",
+  },
   // {
   //   id: "myVideo 4",
   //   title: "My Video 4",
@@ -45,10 +45,10 @@ export default function HomeScreen() {
       <View className="flex-1 m-2 gap-1">
         <Image
           source={item.thumbnail ? { uri: item.thumbnail } : defaultThumbnail}
-          className="w-full h-48"
+          className="w-48 h-48"
         />
-        <Text className="text-lg font-bold">{item.title}</Text>
-        <Text className="text-sm text-gray-600">
+        <Text className="text-lg font-bold dark:text-white">{item.title}</Text>
+        <Text className="text-sm opacity-30 dark:text-white">
           {new Date(item.createdAt).toLocaleDateString()}
         </Text>
       </View>
@@ -56,7 +56,9 @@ export default function HomeScreen() {
   };
 
   const renderHeader = () => (
-    <Text className="text-2xl font-bold mx-2 mb-4">My projects</Text>
+    <Text className="text-2xl font-bold mx-2 mb-4 dark:text-white">
+      My projects
+    </Text>
   );
 
   const renderEmptyComponent = () => (
@@ -65,12 +67,14 @@ export default function HomeScreen() {
         source={require("@/assets/images/no-projects.png")}
         style={{ width: 200, height: 200 }}
       />
-      <Text className="mt-4 text-lg">You have no projects</Text>
+      <Text className="mt-4 text-lg opacity-30 dark:text-white">
+        You have no projects
+      </Text>
     </View>
   );
 
   return (
-    <View className="flex-1 py-safe p-2">
+    <View className="flex-1 py-safe p-2 dark:bg-grey">
       <FlatList
         data={projectsList}
         renderItem={renderItem}
