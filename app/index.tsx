@@ -2,7 +2,7 @@ import React from "react";
 import { Image, TouchableOpacity, View, Text, FlatList } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import { Link, useRouter } from "expo-router";
-import CustomButton from "../components/CustomButton";
+import CustomButton from "@/components/CustomButton";
 
 const defaultThumbnail = require("@/assets/images/icon.png");
 
