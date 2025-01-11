@@ -52,7 +52,7 @@ export default function HomeScreen() {
     if (result.assets && result.assets.length > 0) {
       const uri = result.assets[0].uri;
       router.push({
-        pathname: "/modal",
+        pathname: "/crop",
         params: { videoUri: uri },
       });
     }
