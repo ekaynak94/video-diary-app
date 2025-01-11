@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, View, Text, FlatList } from "react-native";
+import { Image, View, TouchableOpacity, Text, FlatList } from "react-native";
 import { Link } from "expo-router";
 
 const defaultThumbnail = require("@/assets/images/icon.png");
@@ -29,29 +29,39 @@ const projectsList = [
     uri: "",
     thumbnail: "",
   },
-  // {
-  //   id: "myVideo 4",
-  //   title: "My Video 4",
-  //   description: "This is a video.",
-  //   createdAt: "2021-01-01T00:00:00Z",
-  //   uri: "",
-  //   thumbnail: "",
-  // },
+  {
+    id: "myVideo 4",
+    title: "My Video 4",
+    description: "This is a video.",
+    createdAt: "2021-01-01T00:00:00Z",
+    uri: "",
+    thumbnail: "",
+  },
 ];
 
 export default function HomeScreen() {
   const renderItem = ({ item }) => {
     return (
-      <View className="flex-1 m-2 gap-1">
-        <Image
-          source={item.thumbnail ? { uri: item.thumbnail } : defaultThumbnail}
-          className="w-48 h-48"
-        />
-        <Text className="text-lg font-bold dark:text-white">{item.title}</Text>
-        <Text className="text-sm opacity-30 dark:text-white">
-          {new Date(item.createdAt).toLocaleDateString()}
-        </Text>
-      </View>
+      <Link
+        href={{
+          pathname: "/details/[id]",
+          params: { ...item },
+        }}
+        asChild
+      >
+        <TouchableOpacity className="flex-1 m-2 gap-1">
+          <Image
+            source={item.thumbnail ? { uri: item.thumbnail } : defaultThumbnail}
+            className="w-48 h-48"
+          />
+          <Text className="text-lg font-bold dark:text-white">
+            {item.title}
+          </Text>
+          <Text className="text-sm opacity-30 dark:text-white">
+            {new Date(item.createdAt).toLocaleDateString()}
+          </Text>
+        </TouchableOpacity>
+      </Link>
     );
   };
 
