@@ -31,6 +31,7 @@ export default function RootLayout() {
         name="modal"
         options={{
           presentation: "modal",
+          headerShown: false,
         }}
       />
       <Stack.Screen name="+not-found" />

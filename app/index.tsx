@@ -1,6 +1,7 @@
 import React from "react";
 import { Image, View, TouchableOpacity, Text, FlatList } from "react-native";
-import { Link } from "expo-router";
+import * as DocumentPicker from "expo-document-picker";
+import { Link, useRouter } from "expo-router";
 
 const defaultThumbnail = require("@/assets/images/icon.png");
 
@@ -40,6 +41,23 @@ const projectsList = [
 ];
 
 export default function HomeScreen() {
+  const router = useRouter();
+
+  const selectVideo = async () => {
+    const result = await DocumentPicker.getDocumentAsync({
+      type: "video/*",
+      multiple: false,
+    });
+
+    if (result.assets && result.assets.length > 0) {
+      const uri = result.assets[0].uri;
+      router.push({
+        pathname: "/modal",
+        params: { videoUri: uri },
+      });
+    }
+  };
+
   const renderItem = ({ item }) => {
     return (
       <Link
@@ -94,12 +112,12 @@ export default function HomeScreen() {
         ListHeaderComponentClassName={projectsList.length > 0 ? "" : "hidden"}
         ListEmptyComponent={renderEmptyComponent}
       />
-      <Link
-        href="/modal"
+      <TouchableOpacity
+        onPress={selectVideo}
         className="bg-purple rounded-lg m-2 p-4 text-center text-white text-lg"
       >
-        + Create Project
-      </Link>
+        <Text className="text-white">+ Create Project</Text>
+      </TouchableOpacity>
     </View>
   );
 }
