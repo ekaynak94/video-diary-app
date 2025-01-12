@@ -16,13 +16,14 @@ import VideoScrubber from "@/components/VideoScrubber";
 import useProjectStore from "@/store/useProjectStore";
 
 export default function CropModal() {
-  const params = useLocalSearchParams();
+  const params = useLocalSearchParams<{ videoUri: string }>();
   const router = useRouter();
   const [isCropping, setIsCropping] = useState(true);
   const player = useVideoPlayer(params.videoUri, (player) => {
     player.play();
-    player.loop = true;
+    player.timeUpdateEventInterval = 0.1;
   });
+
   const addProject = useProjectStore((state) => state.addProject);
 
   const handleCrop = () => {
@@ -73,7 +74,11 @@ export default function CropModal() {
           <Ionicons name="close" size={24} color="white" />
         </TouchableOpacity>
         {isCropping ? (
-          <VideoScrubber className="p-4 h-72" onCrop={handleCrop} />
+          <VideoScrubber
+            className="p-4 h-72"
+            player={player}
+            onCrop={handleCrop}
+          />
         ) : (
           <MetadataForm className="p-4 h-72" onSubmit={handleSubmit} />
         )}
