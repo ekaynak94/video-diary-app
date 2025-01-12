@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, TextInput } from "react-native";
 import CustomButton from "@/components/CustomButton";
+import * as yup from "yup";
 
 interface MetadataFormProps {
   onSubmit: (name: string, description: string) => void;
@@ -13,15 +14,29 @@ const MetadataForm: React.FC<MetadataFormProps> = ({
 }) => {
   const [name, setName] = useState("My New Project");
   const [description, setDescription] = useState("");
+  const [isValid, setIsValid] = useState(false);
+
+  const validationSchema = yup.object().shape({
+    name: yup.string().required("Name is required"),
+    description: yup.string().required("Description is required"),
+  });
+
+  useEffect(() => {
+    validationSchema
+      .isValid({ name, description })
+      .then((valid) => setIsValid(valid));
+  }, [name, description]);
 
   const handleSubmit = () => {
-    onSubmit(name, description);
+    if (isValid) {
+      onSubmit(name, description);
+    }
   };
 
   return (
     <View className={`${className}`}>
       <TextInput
-        className="border border-dashed border-white/30 p-2 rounded dark:text-white my-4"
+        className="border border-dashed border-white/30 p-2 rounded dark:text-white mb-4"
         placeholder="Name"
         placeholderTextColor="#888"
         value={name}
@@ -41,6 +56,7 @@ const MetadataForm: React.FC<MetadataFormProps> = ({
         iconName="checkmark"
         className="m-2"
         title="Save"
+        disabled={!isValid}
       />
     </View>
   );

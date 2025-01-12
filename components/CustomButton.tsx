@@ -7,6 +7,7 @@ interface CustomButtonProps {
   title: string;
   className?: string;
   iconName?: string;
+  disabled?: boolean;
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -14,11 +15,15 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   title,
   className = "",
   iconName,
+  disabled = false,
 }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      className={`bg-purple rounded-lg p-4 flex-row items-center justify-center gap-4 ${className}`}
+      className={`bg-purple rounded-lg p-4 flex-row items-center justify-center gap-4 ${className} ${
+        disabled ? "opacity-50" : ""
+      }`}
+      disabled={disabled}
     >
       {iconName && (
         <Ionicons
