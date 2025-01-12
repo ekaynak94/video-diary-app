@@ -3,8 +3,6 @@ import {
   View,
   KeyboardAvoidingView,
   Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
   TouchableOpacity,
 } from "react-native";
 import { useVideoPlayer } from "expo-video";
@@ -66,22 +64,20 @@ export default function CropModal() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View className="flex-1 pb-safe dark:bg-grey">
-          <VideoPlayer player={player} />
-          <TouchableOpacity
-            className="absolute top-4 left-4 bg-black/30 p-2 rounded-full"
-            onPress={() => router.back()}
-          >
-            <Ionicons name="close" size={24} color="white" />
-          </TouchableOpacity>
-          {isCropping ? (
-            <VideoScrubber className="p-4 h-72" onCrop={handleCrop} />
-          ) : (
-            <MetadataForm className="p-4 h-72" onSubmit={handleSubmit} />
-          )}
-        </View>
-      </TouchableWithoutFeedback>
+      <View className="flex-1 pb-safe dark:bg-grey">
+        <VideoPlayer player={player} />
+        <TouchableOpacity
+          className="absolute top-4 left-4 bg-black/30 p-2 rounded-full"
+          onPress={() => router.back()}
+        >
+          <Ionicons name="close" size={24} color="white" />
+        </TouchableOpacity>
+        {isCropping ? (
+          <VideoScrubber className="p-4 h-72" onCrop={handleCrop} />
+        ) : (
+          <MetadataForm className="p-4 h-72" onSubmit={handleSubmit} />
+        )}
+      </View>
     </KeyboardAvoidingView>
   );
 }

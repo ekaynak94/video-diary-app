@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, TextInput } from "react-native";
+import { View, TextInput, KeyboardAvoidingView, Platform } from "react-native";
 import CustomButton from "@/components/CustomButton";
 import * as yup from "yup";
 
@@ -49,6 +49,7 @@ const MetadataForm: React.FC<MetadataFormProps> = ({
         value={description}
         onChangeText={setDescription}
         multiline
+        submitBehavior="blurAndSubmit"
       />
       <CustomButton
         onPress={handleSubmit}
