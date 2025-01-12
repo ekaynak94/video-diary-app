@@ -10,6 +10,7 @@ import {
 import { useVideoPlayer } from "expo-video";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { randomUUID } from "expo-crypto";
 import { getThumbnailAsync } from "expo-video-thumbnails";
 import MetadataForm from "@/components/MetadataForm";
 import VideoPlayer from "@/components/VideoPlayer";
@@ -33,7 +34,7 @@ export default function CropModal() {
   const generateVideoThumbnail = async (uri: string) => {
     try {
       const { uri: thumbnailUri } = await getThumbnailAsync(uri, {
-        time: 15000,
+        time: 1000,
       });
       return thumbnailUri;
     } catch (e) {
@@ -43,7 +44,7 @@ export default function CropModal() {
   };
 
   const handleSubmit = async (title: string, description: string) => {
-    const id = params.videoUri;
+    const id = randomUUID();
     const createdAt = new Date().toISOString();
     const thumbnail = await generateVideoThumbnail(params.videoUri);
 
