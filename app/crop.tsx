@@ -10,9 +10,11 @@ import {
 import { useVideoPlayer } from "expo-video";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { getThumbnailAsync } from "expo-video-thumbnails";
 import MetadataForm from "@/components/MetadataForm";
 import VideoPlayer from "@/components/VideoPlayer";
 import VideoScrubber from "@/components/VideoScrubber";
+import useProjectStore from "@/store/useProjectStore";
 
 export default function CropModal() {
   const params = useLocalSearchParams();
@@ -21,13 +23,40 @@ export default function CropModal() {
   const player = useVideoPlayer(params.videoUri, (player) => {
     player.play();
   });
+  const addProject = useProjectStore((state) => state.addProject);
 
   const handleCrop = () => {
     setIsCropping(false);
   };
 
-  const handleSubmit = (title: string, description: string) => {
-    // Handle submit action with title and description
+  const generateVideoThumbnail = async (uri: string) => {
+    try {
+      const { uri: thumbnailUri } = await getThumbnailAsync(uri, {
+        time: 15000,
+      });
+      return thumbnailUri;
+    } catch (e) {
+      console.warn(e);
+      return "";
+    }
+  };
+
+  const handleSubmit = async (title: string, description: string) => {
+    const id = params.videoUri;
+    const createdAt = new Date().toISOString();
+    const thumbnail = await generateVideoThumbnail(params.videoUri);
+
+    const project = {
+      id,
+      title,
+      description,
+      createdAt,
+      uri: params.videoUri,
+      thumbnail,
+    };
+
+    addProject(project);
+    router.back();
   };
 
   return (
