@@ -6,6 +6,7 @@ import {
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
+  Text,
 } from "react-native";
 import { VideoView, useVideoPlayer } from "expo-video";
 import { Ionicons } from "@expo/vector-icons";
@@ -69,16 +70,21 @@ export default function CropModal() {
               />
             </TouchableOpacity>
           </View>
-          {!isCropping && (
+          {isCropping ? (
+            <View className="p-4">
+              <View className="border border-dashed border-white/30 rounded-lg p-4 mb-4 flex-row items-center justify-center">
+                <Text className="dark:text-white text-lg">
+                  This is my scrubber
+                </Text>
+              </View>
+              <CustomButton
+                onPress={handleCrop}
+                iconName={"cut"}
+                title={"Crop"}
+              />
+            </View>
+          ) : (
             <MetadataForm className="p-4" onSubmit={handleSubmit} />
-          )}
-          {isCropping && (
-            <CustomButton
-              onPress={handleCrop}
-              iconName={"cut"}
-              className="m-4"
-              title={"Crop"}
-            />
           )}
         </View>
       </TouchableWithoutFeedback>
