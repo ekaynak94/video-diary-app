@@ -43,13 +43,12 @@ const MetadataForm: React.FC<MetadataFormProps> = ({
         onChangeText={setName}
       />
       <TextInput
-        className="border border-dashed border-white/30 p-2 rounded dark:text-white mb-4"
+        className="border border-dashed border-white/30 p-2 rounded dark:text-white mb-4 h-24"
         placeholder="Add a video description"
         placeholderTextColor="#888"
         value={description}
         onChangeText={setDescription}
         multiline
-        style={{ height: 100 }}
       />
       <CustomButton
         onPress={handleSubmit}
