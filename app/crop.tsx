@@ -27,6 +27,11 @@ export default function CropModal() {
 
   const addProject = useProjectStore((state) => state.addProject);
 
+  const handleClose = () => {
+    player.pause();
+    router.back();
+  };
+
   const handleCrop = (start: number, end: number) => {
     setSegment(() => [start, end]);
     setIsCropping(false);
@@ -52,7 +57,7 @@ export default function CropModal() {
     };
 
     addProject(project);
-    router.back();
+    handleClose();
   };
 
   return (
@@ -64,19 +69,19 @@ export default function CropModal() {
         <VideoPlayer player={player} />
         <TouchableOpacity
           className="absolute top-4 left-4 bg-black/30 p-2 rounded-full"
-          onPress={() => router.back()}
+          onPress={handleClose}
         >
           <Ionicons name="close" size={24} color="white" />
         </TouchableOpacity>
-        {isCropping ? (
-          <VideoScrubber
-            className="p-4 h-72"
-            player={player}
-            onCrop={handleCrop}
-          />
-        ) : (
-          <MetadataForm className="p-4 h-72" onSubmit={handleSubmit} />
-        )}
+        <VideoScrubber
+          className={`p-4 h-72 ${isCropping ? "" : "hidden"}`}
+          player={player}
+          onCrop={handleCrop}
+        />
+        <MetadataForm
+          className={`p-4 h-72 ${isCropping ? "hidden" : ""}`}
+          onSubmit={handleSubmit}
+        />
       </View>
     </KeyboardAvoidingView>
   );

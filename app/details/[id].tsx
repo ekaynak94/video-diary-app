@@ -6,12 +6,21 @@ import VideoPlayer from "@/components/VideoPlayer";
 import { useVideoPlayer } from "expo-video";
 
 export default function DetailsScreen() {
-  const params = useLocalSearchParams();
+  const params = useLocalSearchParams<{
+    uri: string;
+    title: string;
+    description: string;
+  }>();
   const router = useRouter();
   const player = useVideoPlayer(params.uri, (player) => {
     player.play();
     player.loop = true;
   });
+
+  const handleBack = () => {
+    player.pause();
+    router.back();
+  };
 
   return (
     <View className="flex-1 py-safe dark:bg-grey">
@@ -19,7 +28,7 @@ export default function DetailsScreen() {
         <VideoPlayer player={player} />
         <TouchableOpacity
           className="absolute top-4 left-4 bg-black/30 p-2 rounded-full"
-          onPress={() => router.back()}
+          onPress={handleBack}
         >
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
