@@ -45,9 +45,9 @@ export default function CropModal() {
             <Ionicons name="close" size={24} color="white" />
           </TouchableOpacity>
           {isCropping ? (
-            <VideoScrubber className="p-4" onCrop={handleCrop} />
+            <VideoScrubber className="p-4 h-72" onCrop={handleCrop} />
           ) : (
-            <MetadataForm className="p-4" onSubmit={handleSubmit} />
+            <MetadataForm className="p-4 h-72" onSubmit={handleSubmit} />
           )}
         </View>
       </TouchableWithoutFeedback>

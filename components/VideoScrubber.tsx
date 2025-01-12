@@ -12,8 +12,8 @@ const VideoScrubber: React.FC<VideoScrubberProps> = ({
   className = "",
 }) => {
   return (
-    <View className={className}>
-      <View className="border border-dashed border-white/30 rounded-lg my-4 h-32 flex-row items-center justify-center">
+    <View className={`gap-4 ${className}`}>
+      <View className="border border-dashed border-white/30 rounded-lg flex-grow p-2 flex-row items-center justify-center">
         <Text className="dark:text-white text-lg">This is my scrubber</Text>
       </View>
       <CustomButton onPress={onCrop} iconName={"cut"} title={"Crop"} />
