@@ -43,7 +43,7 @@ const MetadataForm: React.FC<MetadataFormProps> = ({
         onChangeText={setName}
       />
       <TextInput
-        className="border border-dashed border-white/30 p-2 rounded dark:text-white"
+        className="border border-dashed border-white/30 p-2 rounded dark:text-white mb-4"
         placeholder="Add a video description"
         placeholderTextColor="#888"
         value={description}
@@ -54,7 +54,7 @@ const MetadataForm: React.FC<MetadataFormProps> = ({
       <CustomButton
         onPress={handleSubmit}
         iconName="checkmark"
-        className="m-2"
+        className=""
         title="Save"
         disabled={!isValid}
       />
