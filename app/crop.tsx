@@ -22,6 +22,7 @@ export default function CropModal() {
   const [isCropping, setIsCropping] = useState(true);
   const player = useVideoPlayer(params.videoUri, (player) => {
     player.play();
+    player.loop = true;
   });
   const addProject = useProjectStore((state) => state.addProject);
 

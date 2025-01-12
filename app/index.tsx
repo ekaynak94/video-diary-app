@@ -3,46 +3,11 @@ import { Image, TouchableOpacity, View, Text, FlatList } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import { Link, useRouter } from "expo-router";
 import CustomButton from "@/components/CustomButton";
-
-const defaultThumbnail = require("@/assets/images/icon.png");
-
-const projectsList = [
-  {
-    id: "myVideo 1",
-    title: "My Video 1",
-    description: "This is a video.",
-    createdAt: "2021-01-01T00:00:00Z",
-    uri: "",
-    thumbnail: "",
-  },
-  {
-    id: "myVideo 2",
-    title: "My Video 2",
-    description: "This is a video.",
-    createdAt: "2021-01-01T00:00:00Z",
-    uri: "",
-    thumbnail: "",
-  },
-  {
-    id: "myVideo 3",
-    title: "My Video 3",
-    description: "This is a video.",
-    createdAt: "2021-01-01T00:00:00Z",
-    uri: "",
-    thumbnail: "",
-  },
-  {
-    id: "myVideo 4",
-    title: "My Video 4",
-    description: "This is a video.",
-    createdAt: "2021-01-01T00:00:00Z",
-    uri: "",
-    thumbnail: "",
-  },
-];
+import useProjectStore from "@/store/useProjectStore";
 
 export default function HomeScreen() {
   const router = useRouter();
+  const projects = useProjectStore((state) => state.projects);
 
   const selectVideo = async () => {
     const result = await DocumentPicker.getDocumentAsync({
@@ -70,8 +35,8 @@ export default function HomeScreen() {
       >
         <TouchableOpacity className="flex-1 m-2 gap-1">
           <Image
-            source={item.thumbnail ? { uri: item.thumbnail } : defaultThumbnail}
-            className="w-48 h-48"
+            source={{ uri: item.thumbnail }}
+            className="w-48 h-48 rounded-lg"
           />
           <Text className="text-lg font-bold dark:text-white">
             {item.title}
@@ -105,12 +70,12 @@ export default function HomeScreen() {
   return (
     <View className="flex-1 py-safe p-2 dark:bg-grey">
       <FlatList
-        data={projectsList}
+        data={projects}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         numColumns={2}
         ListHeaderComponent={renderHeader}
-        ListHeaderComponentClassName={projectsList.length > 0 ? "" : "hidden"}
+        ListHeaderComponentClassName={projects.length > 0 ? "" : "hidden"}
         ListEmptyComponent={renderEmptyComponent}
       />
       <CustomButton

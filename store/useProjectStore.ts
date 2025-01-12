@@ -14,12 +14,13 @@ interface ProjectStore {
   addProject: (project: Project) => void;
 }
 
-const useProjectStore = create<ProjectStore>((set) => ({
+const useProjectStore = create<ProjectStore>()((set) => ({
   projects: [],
-  addProject: (project) =>
+  addProject: (project) => {
     set((state) => ({
       projects: [...state.projects, project],
-    })),
+    }));
+  },
 }));
 
 export default useProjectStore;
