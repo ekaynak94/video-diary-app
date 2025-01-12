@@ -19,6 +19,7 @@ export default function CropModal() {
   const params = useLocalSearchParams<{ videoUri: string }>();
   const router = useRouter();
   const [isCropping, setIsCropping] = useState(true);
+  const [segment, setSegment] = useState<[start: number, end: number]>([0, 0]);
   const player = useVideoPlayer(params.videoUri, (player) => {
     player.play();
     player.timeUpdateEventInterval = 0.1;
@@ -26,33 +27,27 @@ export default function CropModal() {
 
   const addProject = useProjectStore((state) => state.addProject);
 
-  const handleCrop = () => {
+  const handleCrop = (start: number, end: number) => {
+    setSegment(() => [start, end]);
     setIsCropping(false);
-  };
-
-  const generateVideoThumbnail = async (uri: string) => {
-    try {
-      const { uri: thumbnailUri } = await getThumbnailAsync(uri, {
-        time: 1000,
-      });
-      return thumbnailUri;
-    } catch (e) {
-      console.warn(e);
-      return "";
-    }
   };
 
   const handleSubmit = async (title: string, description: string) => {
     const id = randomUUID();
     const createdAt = new Date().toISOString();
-    const thumbnail = await generateVideoThumbnail(params.videoUri);
+    const uri = params.videoUri;
+    const { uri: thumbnail } = await getThumbnailAsync(uri, {
+      time: 1000,
+    });
+
+    console.log("cropping...", segment);
 
     const project = {
       id,
       title,
       description,
       createdAt,
-      uri: params.videoUri,
+      uri,
       thumbnail,
     };
 

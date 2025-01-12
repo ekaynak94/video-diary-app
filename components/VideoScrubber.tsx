@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { StyleSheet, Dimensions, Text, View, ScrollView } from "react-native";
+import { Dimensions, Text, View, ScrollView } from "react-native";
 import { Image } from "expo-image";
 import { VideoThumbnail, VideoPlayer as VideoPlayerType } from "expo-video";
 import { useEventListener } from "expo";
 import CustomButton from "@/components/CustomButton";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const SCREEN_WIDTH = Dimensions.get("screen").width;
-const SCREEN_HEIGHT = Dimensions.get("screen").height;
 export const FRAME_PER_SEC = 1;
 export const FRAME_WIDTH = 80;
 const TILE_HEIGHT = 80;
@@ -43,7 +43,7 @@ interface Frame {
 
 interface VideoScrubberProps {
   player: VideoPlayerType;
-  onCrop: () => void;
+  onCrop: (segmentStart: number, segmentEnd: number) => void;
   className?: string;
 }
 
@@ -52,8 +52,15 @@ const VideoScrubber: React.FC<VideoScrubberProps> = ({
   onCrop,
   className = "",
 }) => {
-  const [frames, setFrames] = useState<Frame[]>([]); // <[{status: <FRAME_STATUS>, uri: <string>}]>
+  const [frames, setFrames] = useState<Frame[]>([]);
   const [framesLineOffset, setFramesLineOffset] = useState(0);
+
+  const handleCrop = () => {
+    onCrop(
+      getLeftLinePlayTime(framesLineOffset),
+      getRightLinePlayTime(framesLineOffset)
+    );
+  };
 
   const handleOnTouchStart = () => {
     player.pause();
@@ -119,9 +126,6 @@ const VideoScrubber: React.FC<VideoScrubberProps> = ({
             width: TILE_WIDTH,
             height: TILE_HEIGHT,
             zIndex: 10,
-          }}
-          onLoad={() => {
-            console.log("Image loaded");
           }}
         />
       );
@@ -207,7 +211,7 @@ const VideoScrubber: React.FC<VideoScrubberProps> = ({
           </ScrollView>
         </View>
       )}
-      <CustomButton onPress={onCrop} iconName={"cut"} title={"Crop"} />
+      <CustomButton onPress={handleCrop} iconName={"cut"} title={"Crop"} />
     </View>
   );
 };
