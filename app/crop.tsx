@@ -26,8 +26,8 @@ export default function CropModal() {
     setIsCropping(false);
   };
 
-  const handleSubmit = (name: string, description: string) => {
-    // Handle submit action with name and description
+  const handleSubmit = (title: string, description: string) => {
+    // Handle submit action with title and description
   };
 
   return (
