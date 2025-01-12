@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   View,
   TouchableOpacity,
-  TextInput,
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
@@ -12,14 +11,13 @@ import { VideoView, useVideoPlayer } from "expo-video";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import CustomButton from "@/components/CustomButton";
+import MetadataForm from "@/components/MetadataForm";
 
 export default function CropModal() {
   const params = useLocalSearchParams();
   const router = useRouter();
   const [isPlaying, setIsPlaying] = useState(true);
   const [isCropping, setIsCropping] = useState(true);
-  const [name, setName] = useState("My New Project");
-  const [description, setDescription] = useState("");
   const player = useVideoPlayer(params.videoUri, (player) => {
     player.play();
   });
@@ -37,8 +35,8 @@ export default function CropModal() {
     setIsCropping(false);
   };
 
-  const handleDone = () => {
-    // Handle done action
+  const handleSubmit = (name: string, description: string) => {
+    // Handle submit action with name and description
   };
 
   return (
@@ -71,34 +69,17 @@ export default function CropModal() {
               />
             </TouchableOpacity>
           </View>
-          <View className="p-4">
-            {!isCropping ? (
-              <View>
-                <TextInput
-                  className="border border-dashed border-white/30 p-2 rounded dark:text-white my-4"
-                  placeholder="Name"
-                  placeholderTextColor="#888"
-                  value={name}
-                  onChangeText={setName}
-                />
-                <TextInput
-                  className="border border-dashed border-white/30 p-2 rounded dark:text-white"
-                  placeholder="Add a video description"
-                  placeholderTextColor="#888"
-                  value={description}
-                  onChangeText={setDescription}
-                  multiline
-                  style={{ height: 100 }}
-                />
-              </View>
-            ) : null}
-          </View>
-          <CustomButton
-            onPress={isCropping ? handleCrop : handleDone}
-            iconName={isCropping ? "cut" : "checkmark"}
-            className="m-4"
-            title={isCropping ? "Crop" : "Done"}
-          />
+          {!isCropping && (
+            <MetadataForm className="p-4" onSubmit={handleSubmit} />
+          )}
+          {isCropping && (
+            <CustomButton
+              onPress={handleCrop}
+              iconName={"cut"}
+              className="m-4"
+              title={"Crop"}
+            />
+          )}
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>

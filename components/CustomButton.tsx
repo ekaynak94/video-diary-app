@@ -20,9 +20,14 @@ const CustomButton: React.FC<CustomButtonProps> = ({
       onPress={onPress}
       className={`bg-purple rounded-lg p-4 flex-row items-center justify-center gap-4 ${className}`}
     >
-      {iconName ? (
-        <Ionicons name={iconName} size={24} color="white" className="mr-2" />
-      ) : null}
+      {iconName && (
+        <Ionicons
+          name={iconName as any}
+          size={24}
+          color="white"
+          className="mr-2"
+        />
+      )}
       <Text className="text-white text-lg">{title}</Text>
     </TouchableOpacity>
   );
