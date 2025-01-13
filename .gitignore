@@ -35,4 +35,8 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
+# Android and iOS directories
+android/
+ios/
+
 app-example

@@ -14,6 +14,8 @@ import MetadataForm from "@/components/MetadataForm";
 import VideoPlayer from "@/components/VideoPlayer";
 import VideoScrubber from "@/components/VideoScrubber";
 import useProjectStore from "@/store/useProjectStore";
+import { FFmpegKit, FFmpegKitConfig } from "ffmpeg-kit-react-native";
+import * as FileSystem from "expo-file-system";
 
 export default function CropModal() {
   const params = useLocalSearchParams<{ videoUri: string }>();
@@ -45,14 +47,19 @@ export default function CropModal() {
       time: 1000,
     });
 
-    console.log("cropping...", segment);
+    const outputUri = `${FileSystem.documentDirectory}${id}.mp4`;
+    const command = `-i ${uri} -ss ${segment[0]} -to ${segment[1]} -c copy ${outputUri}`;
+    const session = await FFmpegKit.execute(command);
+    const returnCode = await session.getReturnCode();
+
+    if (!returnCode.isValueSuccess()) return;
 
     const project = {
       id,
       title,
       description,
       createdAt,
-      uri,
+      uri: outputUri,
       thumbnail,
     };
 
