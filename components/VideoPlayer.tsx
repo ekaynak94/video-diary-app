@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { View, Pressable } from "react-native";
 import { VideoView, VideoPlayer as VideoPlayerType } from "expo-video";
 import { Ionicons } from "@expo/vector-icons";

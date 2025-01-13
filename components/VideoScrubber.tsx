@@ -4,7 +4,6 @@ import { Image } from "expo-image";
 import { VideoThumbnail, VideoPlayer as VideoPlayerType } from "expo-video";
 import { useEventListener } from "expo";
 import CustomButton from "@/components/CustomButton";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const SCREEN_WIDTH = Dimensions.get("screen").width;
 export const FRAME_PER_SEC = 1;
