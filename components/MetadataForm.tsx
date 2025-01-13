@@ -45,7 +45,8 @@ const MetadataForm: React.FC<MetadataFormProps> = ({
         onChangeText={setTitle}
       />
       <TextInput
-        className="bg-grey/5 dark:bg-white/5 p-2  min-h-16 rounded dark:text-white flex-grow"
+        className="bg-grey/5 dark:bg-white/5 p-2 min-h-16 rounded dark:text-white flex-grow"
+        style={{ textAlignVertical: "top" }}
         placeholder="Add a video description"
         placeholderTextColor="#888"
         value={description}
