@@ -1,50 +1,63 @@
-# Welcome to your Expo app 👋
+# Video Diary App 🎬
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+The Video Diary App is a React Native application that allows users to import videos, crop specific 5-second segments, add metadata (name and description), and save these clips for future reference.
 
-## Get started
+## Features ✨
 
-1. Install dependencies
+- **Video Importing**: Select videos from your device's library.
+- **Video Cropping**: Trim videos to 5-second segments using a user-friendly interface.
+- **Metadata Addition**: Assign a name and description to each cropped video.
+- **Saved Clips**: View a list of saved video segments with their metadata.
+
+## Screenshots 📸
+
+![App Screenshot](./assets/images/screenshot.png)
+
+## Technologies Used 🧑🏻‍💻
+
+- **React Native**: Framework for building native apps using React.
+- **Expo**: Toolset for developing, building, and deploying React Native apps.
+- **Expo Router**: For implementing app navigation.
+- **Zustand**: State management solution.
+- **Tanstack Query**: Manages asynchronous logic and FFMPEG operations.
+- **FFMPEG**: Library for video processing tasks.
+- **NativeWind**: Styling solution for React Native.
+- **Expo Video**: Component for video rendering and playback.
+
+## Installation 🛠️
+
+1. **Clone the repository**:
 
    ```bash
-   npm install
+   git clone https://github.com/ekaynak94/video-diary-app.git
+   cd video-diary-app
    ```
 
-2. Start the app
-
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+2. **Install dependencies**:
 
 ```bash
-npm run reset-project
+   npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+3. **Start the app on iOS or Android**:
 
-## Learn more
+Since some features do not work with Expo Go, use the following commands to run the app in a full development environment:
 
-To learn more about developing your project with Expo, look at the following resources:
+- For iOS:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+   npx expo run:ios
+```
 
-## Join the community
+- For Android
 
-Join our community of developers creating universal apps.
+```bash
+   npx expo run:android
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Usage 📱
+
+1. **Import a Video**: Use the "Create project" button to choose a video from your device.
+2. **Crop the Video**: Adjust the scrubber to select a 5-second segment.
+3. **Add Metadata**: Enter a name and description for the video segment.
+4. **Save the Clip**: Save the cropped video to view it later in the home screen.
