@@ -9,7 +9,6 @@ import { useVideoPlayer } from "expo-video";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { randomUUID } from "expo-crypto";
-import { getThumbnailAsync } from "expo-video-thumbnails";
 import MetadataForm from "@/components/MetadataForm";
 import VideoPlayer from "@/components/VideoPlayer";
 import VideoScrubber from "@/components/VideoScrubber";
@@ -39,20 +38,40 @@ export default function CropModal() {
     setIsCropping(false);
   };
 
+  const generateClip = async (
+    videoId: string,
+    videoUri: string
+  ): Promise<string> => {
+    const clipUri = `${FileSystem.documentDirectory}${videoId}.mp4`;
+    const command = `-i ${videoUri} -ss ${segment[0]} -to ${segment[1]} -c copy ${clipUri}`;
+    const session = await FFmpegKit.execute(command);
+    const returnCode = await session.getReturnCode();
+    if (!returnCode.isValueSuccess())
+      throw new Error("Failed to generate clip");
+    return clipUri;
+  };
+
+  const generateThumbnail = async (
+    videoId: string,
+    videoUri: string
+  ): Promise<string> => {
+    const thumbnailUri = `${FileSystem.documentDirectory}${videoId}.jpg`;
+    const command = `-i ${videoUri} -ss ${segment[0]} -vframes 1 ${thumbnailUri}`;
+    const session = await FFmpegKit.execute(command);
+    const returnCode = await session.getReturnCode();
+    if (!returnCode.isValueSuccess())
+      throw new Error("Failed to generate thumbnail");
+    return thumbnailUri;
+  };
+
   const handleSubmit = async (title: string, description: string) => {
     const id = randomUUID();
     const createdAt = new Date().toISOString();
     const videoUri = params.videoUri;
-    const { uri: thumbnailUri } = await getThumbnailAsync(videoUri, {
-      time: 1000,
-    });
 
-    const clipUri = `${FileSystem.documentDirectory}${id}.mp4`;
-    const command = `-i ${videoUri} -ss ${segment[0]} -to ${segment[1]} -c copy ${clipUri}`;
-    const session = await FFmpegKit.execute(command);
-    const returnCode = await session.getReturnCode();
+    const clipUri = await generateClip(id, videoUri);
 
-    if (!returnCode.isValueSuccess()) return;
+    const thumbnailUri = await generateThumbnail(id, videoUri);
 
     const project = {
       id,
