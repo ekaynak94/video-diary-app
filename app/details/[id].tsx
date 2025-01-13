@@ -4,15 +4,13 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import VideoPlayer from "@/components/VideoPlayer";
 import { useVideoPlayer } from "expo-video";
+import { Project } from "@/types";
 
 export default function DetailsScreen() {
-  const params = useLocalSearchParams<{
-    uri: string;
-    title: string;
-    description: string;
-  }>();
+  const params =
+    useLocalSearchParams<Pick<Project, "clipUri" | "title" | "description">>();
   const router = useRouter();
-  const player = useVideoPlayer(params.uri, (player) => {
+  const player = useVideoPlayer(params.clipUri, (player) => {
     player.play();
     player.loop = true;
   });

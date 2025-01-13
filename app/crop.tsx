@@ -13,8 +13,8 @@ import { getThumbnailAsync } from "expo-video-thumbnails";
 import MetadataForm from "@/components/MetadataForm";
 import VideoPlayer from "@/components/VideoPlayer";
 import VideoScrubber from "@/components/VideoScrubber";
-import useProjectStore from "@/store/useProjectStore";
-import { FFmpegKit, FFmpegKitConfig } from "ffmpeg-kit-react-native";
+import useProjectStore from "@/stores/useProjectStore";
+import { FFmpegKit } from "ffmpeg-kit-react-native";
 import * as FileSystem from "expo-file-system";
 
 export default function CropModal() {
@@ -42,13 +42,13 @@ export default function CropModal() {
   const handleSubmit = async (title: string, description: string) => {
     const id = randomUUID();
     const createdAt = new Date().toISOString();
-    const uri = params.videoUri;
-    const { uri: thumbnail } = await getThumbnailAsync(uri, {
+    const videoUri = params.videoUri;
+    const { uri: thumbnailUri } = await getThumbnailAsync(videoUri, {
       time: 1000,
     });
 
-    const outputUri = `${FileSystem.documentDirectory}${id}.mp4`;
-    const command = `-i ${uri} -ss ${segment[0]} -to ${segment[1]} -c copy ${outputUri}`;
+    const clipUri = `${FileSystem.documentDirectory}${id}.mp4`;
+    const command = `-i ${videoUri} -ss ${segment[0]} -to ${segment[1]} -c copy ${clipUri}`;
     const session = await FFmpegKit.execute(command);
     const returnCode = await session.getReturnCode();
 
@@ -59,8 +59,8 @@ export default function CropModal() {
       title,
       description,
       createdAt,
-      uri: outputUri,
-      thumbnail,
+      clipUri,
+      thumbnailUri,
     };
 
     addProject(project);

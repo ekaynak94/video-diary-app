@@ -3,7 +3,8 @@ import { Image, TouchableOpacity, View, Text, FlatList } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import { Link, useRouter } from "expo-router";
 import CustomButton from "@/components/CustomButton";
-import useProjectStore from "@/store/useProjectStore";
+import useProjectStore from "@/stores/useProjectStore";
+import { Project } from "@/types";
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function HomeScreen() {
     }
   };
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item }: { item: Project }) => {
     return (
       <Link
         href={{
@@ -35,7 +36,7 @@ export default function HomeScreen() {
       >
         <TouchableOpacity className="flex-1 m-2 gap-1">
           <Image
-            source={{ uri: item.thumbnail }}
+            source={{ uri: item.thumbnailUri }}
             className="w-48 h-48 rounded-lg"
           />
           <Text className="text-lg font-bold dark:text-white">

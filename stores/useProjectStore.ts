@@ -1,14 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-interface Project {
-  id: string;
-  title: string;
-  description: string;
-  createdAt: string;
-  uri: string;
-  thumbnail: string;
-}
+import { Project } from "@/types";
 
 interface ProjectStore {
   projects: Project[];
