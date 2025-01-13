@@ -36,14 +36,14 @@ const MetadataForm: React.FC<MetadataFormProps> = ({
   return (
     <View className={`gap-4 ${className}`}>
       <TextInput
-        className="border border-dashed border-white/30 p-2 rounded dark:text-white"
+        className="bg-grey/5 dark:bg-white/5 p-2 rounded dark:text-white"
         placeholder="Title"
         placeholderTextColor="#888"
         value={title}
         onChangeText={setTitle}
       />
       <TextInput
-        className="border border-dashed border-white/30 p-2  min-h-16 rounded dark:text-white flex-grow"
+        className="bg-grey/5 dark:bg-white/5 p-2  min-h-16 rounded dark:text-white flex-grow"
         placeholder="Add a video description"
         placeholderTextColor="#888"
         value={description}
