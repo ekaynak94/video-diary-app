@@ -6,11 +6,13 @@ import * as yup from "yup";
 interface MetadataFormProps {
   onSubmit: (title: string, description: string) => void;
   className?: string;
+  isSubmitting: boolean;
 }
 
 const MetadataForm: React.FC<MetadataFormProps> = ({
   onSubmit,
   className = "",
+  isSubmitting,
 }) => {
   const [title, setTitle] = useState("My New Project");
   const [description, setDescription] = useState("");
@@ -56,7 +58,7 @@ const MetadataForm: React.FC<MetadataFormProps> = ({
         iconName="checkmark"
         className=""
         title="Save"
-        disabled={!isValid}
+        disabled={!isValid || isSubmitting}
       />
     </View>
   );

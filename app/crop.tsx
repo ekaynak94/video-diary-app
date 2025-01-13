@@ -85,6 +85,7 @@ export default function CropModal() {
         <MetadataForm
           className={`p-4 h-72 ${isCropping ? "hidden" : ""}`}
           onSubmit={handleFormSubmit}
+          isSubmitting={mutation.isPending}
         />
       </View>
     </KeyboardAvoidingView>
