@@ -4,17 +4,18 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { useVideoPlayer } from "expo-video";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { randomUUID } from "expo-crypto";
 import MetadataForm from "@/components/MetadataForm";
 import VideoPlayer from "@/components/VideoPlayer";
 import VideoScrubber from "@/components/VideoScrubber";
 import useProjectStore from "@/stores/useProjectStore";
-import { FFmpegKit } from "ffmpeg-kit-react-native";
-import * as FileSystem from "expo-file-system";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { generateClip, GenerateClipParams } from "@/lib/utils";
+import { Project } from "@/types";
 
 export default function CropModal() {
   const params = useLocalSearchParams<{ videoUri: string }>();
@@ -38,52 +39,29 @@ export default function CropModal() {
     setIsCropping(false);
   };
 
-  const generateClip = async (
-    videoId: string,
-    videoUri: string
-  ): Promise<string> => {
-    const clipUri = `${FileSystem.documentDirectory}${videoId}.mp4`;
-    const command = `-i ${videoUri} -ss ${segment[0]} -to ${segment[1]} -c copy ${clipUri}`;
-    const session = await FFmpegKit.execute(command);
-    const returnCode = await session.getReturnCode();
-    if (!returnCode.isValueSuccess())
-      throw new Error("Failed to generate clip");
-    return clipUri;
-  };
+  const queryClient = useQueryClient();
+  const mutation = useMutation<Project, Error, GenerateClipParams>({
+    mutationFn: generateClip,
+    onSuccess: (project) => {
+      addProject(project);
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
+      handleClose();
+    },
+    onError: (error) => {
+      Alert.alert("Error", error.message, [
+        { text: "OK", onPress: handleClose },
+      ]);
+    },
+  });
 
-  const generateThumbnail = async (
-    videoId: string,
-    videoUri: string
-  ): Promise<string> => {
-    const thumbnailUri = `${FileSystem.documentDirectory}${videoId}.jpg`;
-    const command = `-i ${videoUri} -ss ${segment[0]} -vframes 1 ${thumbnailUri}`;
-    const session = await FFmpegKit.execute(command);
-    const returnCode = await session.getReturnCode();
-    if (!returnCode.isValueSuccess())
-      throw new Error("Failed to generate thumbnail");
-    return thumbnailUri;
-  };
-
-  const handleSubmit = async (title: string, description: string) => {
-    const id = randomUUID();
-    const createdAt = new Date().toISOString();
-    const videoUri = params.videoUri;
-
-    const clipUri = await generateClip(id, videoUri);
-
-    const thumbnailUri = await generateThumbnail(id, videoUri);
-
-    const project = {
-      id,
+  const handleFormSubmit = (title: string, description: string) => {
+    mutation.mutate({
       title,
       description,
-      createdAt,
-      clipUri,
-      thumbnailUri,
-    };
-
-    addProject(project);
-    handleClose();
+      videoUri: params.videoUri,
+      segmentStart: segment[0],
+      segmentEnd: segment[1],
+    });
   };
 
   return (
@@ -106,7 +84,7 @@ export default function CropModal() {
         />
         <MetadataForm
           className={`p-4 h-72 ${isCropping ? "hidden" : ""}`}
-          onSubmit={handleSubmit}
+          onSubmit={handleFormSubmit}
         />
       </View>
     </KeyboardAvoidingView>
