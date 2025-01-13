@@ -1,28 +1,40 @@
 import React from "react";
-import { Image, TouchableOpacity, View, Text, FlatList } from "react-native";
-import * as DocumentPicker from "expo-document-picker";
+import {
+  Image,
+  TouchableOpacity,
+  View,
+  Text,
+  FlatList,
+  Alert,
+} from "react-native";
 import { Link, useRouter } from "expo-router";
 import CustomButton from "@/components/CustomButton";
 import useProjectStore from "@/stores/useProjectStore";
 import { Project } from "@/types";
+import { selectVideo } from "@/lib/utils";
+import { useMutation } from "@tanstack/react-query";
 
 export default function HomeScreen() {
   const router = useRouter();
   const projects = useProjectStore((state) => state.projects);
 
-  const selectVideo = async () => {
-    const result = await DocumentPicker.getDocumentAsync({
-      type: "video/*",
-      multiple: false,
-    });
+  const mutation = useMutation<string | null, Error>({
+    mutationFn: selectVideo,
+    onSuccess: (uri) => {
+      if (uri) {
+        router.push({
+          pathname: "/crop",
+          params: { videoUri: uri },
+        });
+      }
+    },
+    onError: (error) => {
+      Alert.alert("Error", error.message);
+    },
+  });
 
-    if (result.assets && result.assets.length > 0) {
-      const uri = result.assets[0].uri;
-      router.push({
-        pathname: "/crop",
-        params: { videoUri: uri },
-      });
-    }
+  const handleSelectVideo = () => {
+    mutation.mutate();
   };
 
   const renderItem = ({ item }: { item: Project }) => {
@@ -82,7 +94,7 @@ export default function HomeScreen() {
 
       <CustomButton
         className="m-2"
-        onPress={selectVideo}
+        onPress={handleSelectVideo}
         iconName="add"
         title="Create Project"
       />

@@ -1,6 +1,7 @@
 import { randomUUID } from "expo-crypto";
 import { FFmpegKit } from "ffmpeg-kit-react-native";
 import * as FileSystem from "expo-file-system";
+import * as DocumentPicker from "expo-document-picker";
 
 export interface GenerateClipParams {
   title: string;
@@ -37,4 +38,17 @@ export const generateClip = async ({
     clipUri,
     thumbnailUri,
   };
+};
+
+export const selectVideo = async (): Promise<string | null> => {
+  const result = await DocumentPicker.getDocumentAsync({
+    type: "video/*",
+    multiple: false,
+  });
+
+  if (result.assets && result.assets.length > 0) {
+    return result.assets[0].uri;
+  }
+
+  return null;
 };
