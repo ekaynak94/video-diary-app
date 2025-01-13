@@ -51,6 +51,7 @@ const VideoScrubber: React.FC<VideoScrubberProps> = ({
   onCrop,
   className = "",
 }) => {
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const [frames, setFrames] = useState<Frame[]>([]);
   const [framesLineOffset, setFramesLineOffset] = useState(0);
 
@@ -82,26 +83,36 @@ const VideoScrubber: React.FC<VideoScrubberProps> = ({
 
   useEventListener(player, "timeUpdate", handleOnProgress);
 
-  useEventListener(player, "availableSubtitleTracksChange", () => {
-    const numberOfFrames = Math.ceil(player.duration);
-    const idleFrames = Array(numberOfFrames).fill({
-      status: FRAME_STATUS.LOADING.name.description,
-    });
-    setFrames(idleFrames);
-    player
-      .generateThumbnailsAsync(
-        idleFrames.map(
-          (_frame, index) => (index / numberOfFrames) * player.duration
-        )
-      )
-      .then((thumbnails) => {
-        setFrames(
-          thumbnails.map((thumbnail) => ({
-            thumbnail,
-            status: FRAME_STATUS.READY.name.description,
-          }))
-        );
+  useEventListener(player, "statusChange", ({ oldStatus, status }) => {
+    if (oldStatus === "loading" && status === "readyToPlay") {
+      setVideoLoaded((prev) => {
+        if (prev === true) return true;
+        const numberOfFrames = Math.ceil(player.duration);
+        const idleFrames = Array(numberOfFrames).fill({
+          status: FRAME_STATUS.LOADING.name.description,
+        });
+        setFrames(idleFrames);
+        player
+          .generateThumbnailsAsync(
+            idleFrames.map(
+              (_frame, index) => (index / numberOfFrames) * player.duration
+            )
+          )
+          .then((thumbnails) => {
+            console.log("thumbnails", thumbnails);
+            setFrames(
+              thumbnails.map((thumbnail) => ({
+                thumbnail,
+                status: FRAME_STATUS.READY.name.description,
+              }))
+            );
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+        return true;
       });
+    }
   });
 
   const renderFrame = (frame: Frame, index: React.Key | null | undefined) => {
