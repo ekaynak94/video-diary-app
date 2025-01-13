@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Project } from "@/types";
 
 interface ProjectStore {
@@ -19,6 +20,7 @@ const useProjectStore = create<ProjectStore>()(
     }),
     {
       name: "project-store",
+      storage: createJSONStorage(() => AsyncStorage),
     }
   )
 );

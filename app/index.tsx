@@ -79,6 +79,7 @@ export default function HomeScreen() {
         ListHeaderComponentClassName={projects.length > 0 ? "" : "hidden"}
         ListEmptyComponent={renderEmptyComponent}
       />
+
       <CustomButton
         className="m-2"
         onPress={selectVideo}
