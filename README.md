@@ -61,3 +61,5 @@ Since some features do not work with Expo Go, use the following commands to run 
 2. **Crop the Video**: Adjust the scrubber to select a 5-second segment.
 3. **Add Metadata**: Enter a name and description for the video segment.
 4. **Save the Clip**: Save the cropped video to view it later in the home screen.
+
+Enjoy !!
